@@ -1,5 +1,5 @@
 // pbullet project main.go
-package main
+package pbullet
 
 import (
 	"encoding/json"
@@ -89,21 +89,4 @@ func (pd *Device) PushLink(title, urlAddress string) (resp *http.Response, err e
 	pushVals.Set("url", urlAddress)
 
 	return http.PostForm(pushUrl, pushVals)
-}
-
-func main() {
-	SetAPIKey("e4ac3e11929d522888c58ed67268b643")
-
-	devList, err := GetDevices()
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(devList)
-	for _, dev := range devList.Devices {
-		_, pushErr := dev.PushNote("testy sub", "body")
-		if pushErr != nil {
-			fmt.Println(err)
-		}
-	}
-	fmt.Println("Done")
 }
