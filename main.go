@@ -1,4 +1,5 @@
-// pbullet project main.go
+// Go library for the Push Bullet REST API
+// More info: https://www.pushbullet.com/api
 package pbullet
 
 import (
@@ -13,6 +14,7 @@ import (
 var pushUrl string
 var getUrl string
 
+// Extra device info returned by GetDevices API call.
 type DeviceInfo struct {
 	Manufacturer   string `json:"manufacturer"`
 	Model          string `json:"model"`
@@ -22,17 +24,21 @@ type DeviceInfo struct {
 	Nickname       string `json:"nickname"`
 }
 
+// Device is the structure needed to push Notes/Addresses/Links/etc.
+// Only need to populate Id field. Other fields are informational only.
 type Device struct {
 	Id      int        `json:"id"`
 	DevInfo DeviceInfo `json:"extras"`
 	Owner   string     `json:"owner_name"`
 }
 
+// GetDevices returns two lists, owned devices and devices that are shared.
 type DeviceList struct {
 	Devices       []Device `json:"devices"`
 	SharedDevices []Device `json:"shared_devices"`
 }
 
+// Set the API key used for all Get and Push API calls.
 func SetAPIKey(apiKey string) {
 	pUrl := url.URL{}
 	pUrl.Scheme = "https"
@@ -49,6 +55,7 @@ func SetAPIKey(apiKey string) {
 	getUrl = gUrl.String()
 }
 
+// Get devices configured on PushBullet
 func GetDevices() (DeviceList, error) {
 	var devList DeviceList
 	resp, err := http.Get(getUrl)
@@ -61,6 +68,7 @@ func GetDevices() (DeviceList, error) {
 	return devList, err
 }
 
+// Push a note to a device.
 func (pd *Device) PushNote(title, body string) (resp *http.Response, err error) {
 	pushVals := url.Values{}
 	pushVals.Set("device_id", strconv.Itoa(pd.Id))
@@ -71,6 +79,7 @@ func (pd *Device) PushNote(title, body string) (resp *http.Response, err error) 
 	return http.PostForm(pushUrl, pushVals)
 }
 
+// Push an address to a device.
 func (pd *Device) PushAddress(name, address string) (resp *http.Response, err error) {
 	pushVals := url.Values{}
 	pushVals.Set("device_id", strconv.Itoa(pd.Id))
@@ -81,6 +90,7 @@ func (pd *Device) PushAddress(name, address string) (resp *http.Response, err er
 	return http.PostForm(pushUrl, pushVals)
 }
 
+// Push a link to a device.
 func (pd *Device) PushLink(title, urlAddress string) (resp *http.Response, err error) {
 	pushVals := url.Values{}
 	pushVals.Set("device_id", strconv.Itoa(pd.Id))
