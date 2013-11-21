@@ -43,14 +43,14 @@ func SetAPIKey(apiKey string) {
 	pUrl := url.URL{}
 	pUrl.Scheme = "https"
 	pUrl.User = url.UserPassword(apiKey, "")
-	pUrl.Host = "www.pushbullet.com"
+	pUrl.Host = "api.pushbullet.com"
 	pUrl.Path = "/api/pushes"
 	pushUrl = pUrl.String()
 
 	gUrl := url.URL{}
 	gUrl.Scheme = "https"
 	gUrl.User = url.UserPassword(apiKey, "")
-	gUrl.Host = "www.pushbullet.com"
+	gUrl.Host = "api.pushbullet.com"
 	gUrl.Path = "/api/devices"
 	getUrl = gUrl.String()
 }
