@@ -4,7 +4,6 @@ package pbullet
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -20,7 +19,7 @@ type DeviceInfo struct {
 	Model          string `json:"model"`
 	AndroidVersion string `json:"android_version"`
 	SDKVersion     string `json:"sdk_version"`
-	AppVersion     string `json:"app_version"`
+	AppVersion     int    `json:"app_version"`
 	Nickname       string `json:"nickname"`
 }
 
@@ -62,7 +61,6 @@ func GetDevices() (DeviceList, error) {
 	if err != nil {
 		return devList, err
 	}
-	fmt.Println(resp)
 	respBytes, _ := ioutil.ReadAll(resp.Body)
 	err = json.Unmarshal(respBytes, &devList)
 	return devList, err
