@@ -26,7 +26,7 @@ type DeviceInfo struct {
 // Device is the structure needed to push Notes/Addresses/Links/etc.
 // Only need to populate Id field. Other fields are informational only.
 type Device struct {
-	Id      int        `json:"id"`
+	Id      int64        `json:"id"`
 	DevInfo DeviceInfo `json:"extras"`
 	Owner   string     `json:"owner_name"`
 }
@@ -69,7 +69,7 @@ func GetDevices() (DeviceList, error) {
 // Push a note to a device.
 func (pd *Device) PushNote(title, body string) (resp *http.Response, err error) {
 	pushVals := url.Values{}
-	pushVals.Set("device_id", strconv.Itoa(pd.Id))
+	pushVals.Set("device_id", strconv.FormatInt(pd.Id,10))
 	pushVals.Set("type", "note")
 	pushVals.Set("title", title)
 	pushVals.Set("body", body)
@@ -80,7 +80,7 @@ func (pd *Device) PushNote(title, body string) (resp *http.Response, err error) 
 // Push an address to a device.
 func (pd *Device) PushAddress(name, address string) (resp *http.Response, err error) {
 	pushVals := url.Values{}
-	pushVals.Set("device_id", strconv.Itoa(pd.Id))
+	pushVals.Set("device_id", strconv.FormatInt(pd.Id,10))
 	pushVals.Set("type", "note")
 	pushVals.Set("name", name)
 	pushVals.Set("address", address)
@@ -91,7 +91,7 @@ func (pd *Device) PushAddress(name, address string) (resp *http.Response, err er
 // Push a link to a device.
 func (pd *Device) PushLink(title, urlAddress string) (resp *http.Response, err error) {
 	pushVals := url.Values{}
-	pushVals.Set("device_id", strconv.Itoa(pd.Id))
+	pushVals.Set("device_id", strconv.FormatInt(pd.Id,10))
 	pushVals.Set("type", "note")
 	pushVals.Set("title", title)
 	pushVals.Set("url", urlAddress)
